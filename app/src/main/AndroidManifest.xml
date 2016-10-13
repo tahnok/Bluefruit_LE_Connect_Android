@@ -90,6 +90,15 @@
                 android:value="com.adafruit.bluefruit.le.connect.app.MainActivity" />
         </activity>
         <activity
+            android:name=".app.WesleyControllerActivity"
+            android:label="@string/title_activity_controller"
+            android:parentActivityName=".app.MainActivity"
+            android:screenOrientation="fullUser">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.adafruit.bluefruit.le.connect.app.MainActivity" />
+        </activity>
+        <activity
             android:name=".app.ControllerActivity"
             android:label="@string/title_activity_controller"
             android:parentActivityName=".app.MainActivity"

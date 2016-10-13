@@ -54,7 +54,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.adafruit.bluefruit.le.connect.R;
-import com.adafruit.bluefruit.le.connect.app.neopixel.NeopixelActivity;
 import com.adafruit.bluefruit.le.connect.app.settings.SettingsActivity;
 import com.adafruit.bluefruit.le.connect.app.update.FirmwareUpdater;
 import com.adafruit.bluefruit.le.connect.app.update.ReleasesParser;
@@ -63,7 +62,6 @@ import com.adafruit.bluefruit.le.connect.ble.BleManager;
 import com.adafruit.bluefruit.le.connect.ble.BleUtils;
 import com.adafruit.bluefruit.le.connect.ui.utils.DialogUtils;
 import com.adafruit.bluefruit.le.connect.ui.utils.ExpandableHeightExpandableListView;
-import com.adafruit.bluefruit.le.connect.ui.utils.MetricsUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -608,52 +606,8 @@ public class MainActivity extends AppCompatActivity implements BleManager.BleMan
     }
 
     private void showChooseDeviceServiceDialog(final BluetoothDeviceData deviceData) {
-        // Prepare dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        String title = String.format(getString(R.string.scan_connectto_dialog_title_format), deviceData.getNiceName());
-        String[] items = new String[kComponentsNameIds.length];
-        for (int i = 0; i < kComponentsNameIds.length; i++)
-            items[i] = getString(kComponentsNameIds[i]);
-
-        builder.setTitle(title)
-                .setItems(items, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (kComponentsNameIds[which]) {
-                            case R.string.scan_connectservice_info: {          // Info
-                                mComponentToStartWhenConnected = InfoActivity.class;
-                                break;
-                            }
-                            case R.string.scan_connectservice_uart: {           // Uart
-                                mComponentToStartWhenConnected = UartActivity.class;
-                                break;
-                            }
-                            case R.string.scan_connectservice_pinio: {        // PinIO
-                                mComponentToStartWhenConnected = PinIOActivity.class;
-                                break;
-                            }
-                            case R.string.scan_connectservice_controller: {    // Controller
-                                mComponentToStartWhenConnected = ControllerActivity.class;
-                                break;
-                            }
-                            case R.string.scan_connectservice_beacon: {        // Beacon
-                                mComponentToStartWhenConnected = BeaconActivity.class;
-                                break;
-                            }
-                            case R.string.scan_connectservice_neopixel: {       // Neopixel
-                                mComponentToStartWhenConnected = NeopixelActivity.class;
-                                break;
-                            }
-                        }
-
-                        if (mComponentToStartWhenConnected != null) {
-                            connect(deviceData.device);            // First connect to the device, and when connected go to selected activity
-                        }
-                    }
-                });
-
-        // Show dialog
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        mComponentToStartWhenConnected = WesleyControllerActivity.class;
+        connect(deviceData.device);
     }
 
     private boolean manageBluetoothAvailability() {

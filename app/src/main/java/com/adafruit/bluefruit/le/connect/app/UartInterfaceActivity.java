@@ -47,6 +47,9 @@ public class UartInterfaceActivity extends AppCompatActivity implements BleManag
             Log.w(TAG, "Uart Service not discovered. Unable to send data");
         }
     }
+    protected void sendDataWithCRC(String string) {
+        sendDataWithCRC(string.getBytes());
+    }
 
     // Send data to UART and add a byte with a custom CRC
     protected void sendDataWithCRC(byte[] data) {
