@@ -38,17 +38,17 @@
             android:text="Point your device camera to the QR-Code and center it on the preview image\n(The code will be automatically read when is visible)"
             android:textColor="@android:color/white"/>
 
-        <com.adafruit.bluefruit.le.connect.app.settings.barcode.CameraSourcePreview
+        <me.tahnok.bluefruit.le.connect.app.settings.barcode.CameraSourcePreview
             android:id="@+id/preview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.adafruit.bluefruit.le.connect.app.settings.barcode.GraphicOverlay
+            <me.tahnok.bluefruit.le.connect.app.settings.barcode.GraphicOverlay
                 android:id="@+id/graphicOverlay"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
-        </com.adafruit.bluefruit.le.connect.app.settings.barcode.CameraSourcePreview>
+        </me.tahnok.bluefruit.le.connect.app.settings.barcode.CameraSourcePreview>
 
     </LinearLayout>
 </RelativeLayout>

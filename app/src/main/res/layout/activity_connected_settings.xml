@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.adafruit.bluefruit.le.connect.app.settings.ConnectedSettingsActivity">
+    tools:context="me.tahnok.bluefruit.le.connect.app.settings.ConnectedSettingsActivity">
 
 
     <ScrollView
@@ -76,7 +76,7 @@
                     android:text="@string/connectedsettings_firmwarereleasesheadertitle"
                     android:textColor="@drawable/default_textcolor" />
 
-                <com.adafruit.bluefruit.le.connect.ui.utils.ExpandableHeightListView
+                <me.tahnok.bluefruit.le.connect.ui.utils.ExpandableHeightListView
                     android:id="@+id/firmwareReleasesListView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -109,7 +109,7 @@
                     android:textColor="@drawable/default_textcolor" />
 
 
-                <com.adafruit.bluefruit.le.connect.ui.utils.ExpandableHeightListView
+                <me.tahnok.bluefruit.le.connect.ui.utils.ExpandableHeightListView
                     android:id="@+id/bootloaderReleasesListView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
