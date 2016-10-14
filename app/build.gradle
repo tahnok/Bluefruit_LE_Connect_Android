@@ -18,10 +18,20 @@ android {
         noCompress "zip"
     }
 
+    signingConfigs {
+        release {
+            storeFile file("../keystores/prod.keystore")
+            keyAlias "rule110"
+            storePassword "$System.env.KEYSTORE_PASSWORD"
+            keyPassword "$System.env.KEYSTORE_PASSWORD"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 }
