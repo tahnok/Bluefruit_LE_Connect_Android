@@ -179,11 +179,6 @@
                         android:layout_height="40dp"
                         android:text="@string/scan_filters_unnamed" />
 
-                    <CheckBox
-                        android:id="@+id/filtersUartCheckBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:text="@string/scan_filters_onlyuart" />
                 </LinearLayout>
 
 

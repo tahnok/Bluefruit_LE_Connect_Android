@@ -121,7 +121,6 @@ public class MainActivity extends AppCompatActivity implements BleManager.BleMan
     private SeekBar mFiltersRssiSeekBar;
     private TextView mFiltersRssiValueTextView;
     private CheckBox mFiltersUnnamedCheckBox;
-    private CheckBox mFiltersUartCheckBox;
 
     // Data
     private BleManager mBleManager;
@@ -231,14 +230,6 @@ public class MainActivity extends AppCompatActivity implements BleManager.BleMan
                 updateFilters();
             }
         });
-        mFiltersUartCheckBox = (CheckBox) findViewById(R.id.filtersUartCheckBox);
-        mFiltersUartCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mPeripheralList.setFilterOnlyUartEnabled(isChecked);
-                updateFilters();
-            }
-        });
 
         // Filters
         SharedPreferences preferences = getSharedPreferences(kPreferences, MODE_PRIVATE);
@@ -248,7 +239,6 @@ public class MainActivity extends AppCompatActivity implements BleManager.BleMan
         mFiltersNameEditText.setText(mPeripheralList.getFilterName());
         setRssiSliderValue(mPeripheralList.getFilterRssiValue());
         mFiltersUnnamedCheckBox.setChecked(mPeripheralList.isFilterUnnamedEnabled());
-        mFiltersUartCheckBox.setChecked(mPeripheralList.isFilterOnlyUartEnabled());
 
         // Setup when activity is created for the first time
         if (savedInstanceState == null) {
@@ -533,7 +523,6 @@ public class MainActivity extends AppCompatActivity implements BleManager.BleMan
         mFiltersNameEditText.setText(mPeripheralList.getFilterName());
         setRssiSliderValue(mPeripheralList.getFilterRssiValue());
         mFiltersUnnamedCheckBox.setChecked(mPeripheralList.isFilterUnnamedEnabled());
-        mFiltersUartCheckBox.setChecked(mPeripheralList.isFilterOnlyUartEnabled());
         updateFilters();
     }
 
@@ -1341,7 +1330,7 @@ public class MainActivity extends AppCompatActivity implements BleManager.BleMan
             mIsFilterNameCaseInsensitive = preferences.getBoolean(kPreferences_filtersIsNameCaseInsensitive, true);
             mRssiFilterValue = preferences.getInt(kPreferences_filtersRssi, kMaxRssiValue);
             mIsUnnamedEnabled = preferences.getBoolean(kPreferences_filtersUnnamedEnabled, true);
-            mIsOnlyUartEnabled = preferences.getBoolean(kPreferences_filtersUartEnabled, false);
+            mIsOnlyUartEnabled = true;
         }
 
         String getFilterName() {
@@ -1408,15 +1397,6 @@ public class MainActivity extends AppCompatActivity implements BleManager.BleMan
         boolean isFilterOnlyUartEnabled() {
             return mIsOnlyUartEnabled;
         }
-
-        void setFilterOnlyUartEnabled(boolean enabled) {
-            mIsOnlyUartEnabled = enabled;
-            mIsFilterDirty = true;
-
-            preferencesEditor.putBoolean(kPreferences_filtersUartEnabled, enabled);
-            preferencesEditor.apply();
-        }
-
 
         void setDefaultFilters() {
             mFilterName = null;
