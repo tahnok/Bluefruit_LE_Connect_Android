@@ -8,7 +8,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.TextView;
+import android.widget.SeekBar;
 
 import com.larswerkman.holocolorpicker.ColorPicker;
 import com.larswerkman.holocolorpicker.SaturationBar;
@@ -32,8 +32,6 @@ public class WesleyControllerActivity extends UartInterfaceActivity implements C
 
     // UI
     private ColorPicker mColorPicker;
-    private View mRgbColorView;
-    private TextView mRgbTextView;
     private Button offButton;
     private AppCompatCheckBox checkbox1;
     private AppCompatCheckBox checkbox2;
@@ -46,6 +44,8 @@ public class WesleyControllerActivity extends UartInterfaceActivity implements C
 
     private int mSelectedColor;
     private boolean[] seed = new boolean[8];
+    private SeekBar ledBrightnessBar;
+    private int ledBrightnessValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +55,6 @@ public class WesleyControllerActivity extends UartInterfaceActivity implements C
         mBleManager = BleManager.getInstance(this);
 
         // UI
-        mRgbColorView = findViewById(R.id.rgbColorView);
-        mRgbTextView = (TextView) findViewById(R.id.rgbTextView);
         offButton = (Button) findViewById(R.id.off_button);
         offButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,16 +89,38 @@ public class WesleyControllerActivity extends UartInterfaceActivity implements C
             mColorPicker.setOnColorChangedListener(this);
         }
 
-        if (kPersistValues) {
-            SharedPreferences preferences = getSharedPreferences(kPreferences, MODE_PRIVATE);
-            mSelectedColor = preferences.getInt(kPreferences_color, kFirstTimeColor);
-        } else {
-            mSelectedColor = kFirstTimeColor;
-        }
+        mSelectedColor = kFirstTimeColor;
 
         mColorPicker.setOldCenterColor(mSelectedColor);
         mColorPicker.setColor(mSelectedColor);
         onColorChanged(mSelectedColor);
+
+        ledBrightnessBar = (SeekBar) findViewById(R.id.ledBrightness);
+        ledBrightnessBar.setMax(86);
+        ledBrightnessBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                ledBrightnessValue = progress;
+               Log.e(TAG, "Progress: " + progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                ByteBuffer buffer = ByteBuffer.allocate(2 + 1).order(java.nio.ByteOrder.LITTLE_ENDIAN);
+
+                // prefix
+                String prefix = "!B";
+                buffer.put(prefix.getBytes());
+
+                buffer.put((byte) ledBrightnessValue);
+                sendDataWithCRC(buffer.array());
+            }
+        });
 
         // Start services
         onServicesDiscovered();
@@ -122,7 +142,6 @@ public class WesleyControllerActivity extends UartInterfaceActivity implements C
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_color_picker, menu);
         return true;
     }
 
@@ -165,15 +184,6 @@ public class WesleyControllerActivity extends UartInterfaceActivity implements C
     public void onColorChanged(int color) {
         // Save selected color
         mSelectedColor = color;
-
-        // Update UI
-        mRgbColorView.setBackgroundColor(color);
-
-        int r = (color >> 16) & 0xFF;
-        int g = (color >> 8) & 0xFF;
-        int b = (color >> 0) & 0xFF;
-        String text = String.format(getString(R.string.colorpicker_rgbformat), r, g, b);
-        mRgbTextView.setText(text);
     }
 
 
